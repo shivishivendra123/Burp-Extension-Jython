@@ -17,7 +17,7 @@ import ast
 import sys
 import threading
 import json
-
+# import cElementTree as ElementTree
 # For easier debugging, if you want.
 # https://github.com/securityMB/burp-exceptions
 try:
@@ -99,8 +99,25 @@ class BurpExtender(IBurpExtender, ITab, IContextMenuFactory):
                         direc[str(key)][str(i)]['Method'] = " "
                         direc[str(key)][str(i)]['Params'] = " "
         # print(direc)
+        dictoxml(direc)
         with open('data.txt', 'w') as outfile:
             json.dump(direc, outfile)
+def dictoxml(direc):
+    f = open("xml.xml","w+")
+    for key,val in direc.items():
+        h = key
+        print("<%s>"% (key))
+        f.write("<%s>\n"% (key))
+        for key,val in val.items():
+            f.write('<node>\n')
+            f.write('<url>%s</url>\n'% (key))
+            for key,val in val.items():
+                f.write('%s:%s\n'%(key,val))   
+            f.write('</node>\n')
+        f.write('</%s>\n'%(h))
+    f.close()
+        # xml = dicttoxml.dicttoxml(direc)
+        # print(xml)
         # Create a context menttu
         # callbacks.registerContextMenuFactory(self)
 
